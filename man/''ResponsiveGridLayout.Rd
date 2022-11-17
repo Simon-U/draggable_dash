@@ -51,7 +51,7 @@ Default value is True}
 \item{clearSavedLayout}{Logical. (bool) If set to true, the position of elements saved on client side
 will be cleared on the next page load.}
 
-\item{ncols}{Numeric. ({breakpoint: number}) the default number of columns by item.
+\item{ncols}{Named list. ({breakpoint: number}) the default number of columns by item.
 Default value is {lg: 6, md: 5, sm: 3, xs: 4, xxs: 2}.}
 
 \item{nrows}{Numeric. (number) the default number of row by item.

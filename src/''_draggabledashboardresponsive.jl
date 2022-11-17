@@ -45,7 +45,7 @@ Default value is {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}.
 Default value is True
 - `clearSavedLayout` (Bool; optional): (bool) If set to true, then the layout saved in the client browser
 will be cleared in the next page load.
-- `ncols` (Real; optional): ({breakpoint: number}) the default number of columns by item.
+- `ncols` (Dict; optional): ({breakpoint: number}) the default number of columns by item.
 Default value is {lg: 6, md: 5, sm: 3, xs: 4, xxs: 2}.
 - `nrows` (Real; optional): (number) the default number of row by item.
 Default value is 8.
