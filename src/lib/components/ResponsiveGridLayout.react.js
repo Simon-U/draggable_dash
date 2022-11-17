@@ -22,7 +22,7 @@ const defaultItemLayout = (item_layout, id, key, ncols, nrows, max_cols) => {
     const col = key % nb_items_x;
     const row = Math.floor(key / nb_items_x);
     const defaultChildLayout = {
-        i: id || key.toString(),
+        i: id.toString() || key.toString(),
         x: col * ncols,
         y: row,
         w: ncols,
@@ -31,7 +31,7 @@ const defaultItemLayout = (item_layout, id, key, ncols, nrows, max_cols) => {
     return {
         ...defaultChildLayout,
         ...item_layout,
-        i: id || key.toString(),
+        i: id.toString() || key.toString(),
         x: item_layout.x ? item_layout.x : defaultChildLayout.x,
         y: item_layout.y ? item_layout.y : defaultChildLayout.y,
         w: item_layout.w ? item_layout.w : defaultChildLayout.w,
