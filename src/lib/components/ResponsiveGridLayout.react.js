@@ -17,21 +17,21 @@ import './style.css';
 
 const ResponsiveReactGridLayout = widthProvider(Responsive);
 
-const defaultItemLayout = (item_layout, id, key, ncols, max_cols) => {
+const defaultItemLayout = (item_layout, id, key, ncols, nrows, max_cols) => {
     const nb_items_x = Math.floor(max_cols / ncols);
     const col = key % nb_items_x;
     const row = Math.floor(key / nb_items_x);
     const defaultChildLayout = {
-        i: id || key.toString(),
+        i: id.toString() || key.toString(),
         x: col * ncols,
         y: row,
         w: ncols,
-        h: NROWS,
+        h: nrows
     };
     return {
         ...defaultChildLayout,
         ...item_layout,
-        i: id || key.toString(),
+        i: id.toString() || key.toString(),
         x: item_layout.x ? item_layout.x : defaultChildLayout.x,
         y: item_layout.y ? item_layout.y : defaultChildLayout.y,
         w: item_layout.w ? item_layout.w : defaultChildLayout.w,
@@ -61,6 +61,7 @@ export default class ResponsiveGridLayout extends Component {
             layouts: providedLayouts,
             clearSavedLayout,
             ncols = NCOLS_RESPONSIVE,
+            nrows = NROWS,
             breakpoints = BREAKPOINTS,
             gridCols = GRID_COLS_RESPONSIVE,
         } = this.props;
@@ -133,6 +134,7 @@ export default class ResponsiveGridLayout extends Component {
                         child_id,
                         key,
                         ncols[bkp],
+                        nrows,
                         gridCols[bkp]
                     );
                 }
@@ -142,6 +144,7 @@ export default class ResponsiveGridLayout extends Component {
                         child_id,
                         key,
                         ncols[bkp],
+                        nrows,
                         gridCols[bkp]
                     );
                 }
@@ -345,7 +348,7 @@ ResponsiveGridLayout.propTypes = {
      * ({breakpoint: number}) the default number of columns by item.
      * Default value is {lg: 6, md: 5, sm: 3, xs: 4, xxs: 2}.
      */
-    ncols: PropTypes.number,
+    ncols: PropTypes.object,
 
     /**
      * (number) the default number of row by item.
