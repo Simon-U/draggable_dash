@@ -3,7 +3,7 @@ module DashDraggable
 using Dash
 
 const resources_path = realpath(joinpath( @__DIR__, "..", "deps"))
-const version = "0.1.2"
+const version = "0.1.3"
 
 include("''_dashboarditem.jl")
 include("''_dashboarditemresponsive.jl")

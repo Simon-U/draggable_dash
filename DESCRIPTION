@@ -1,6 +1,6 @@
 Package: dashDraggable
 Title: A Dash component for building draggable and resizable grid layouts. Based on the wel known react-grid-layout.
-Version: 0.1.2
+Version: 0.1.3
 Description: A Dash component for building draggable and resizable grid layouts. Based on the wel known react-grid-layout.
 Depends: R (>= 3.0.2)
 Imports: 
