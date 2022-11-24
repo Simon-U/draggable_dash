@@ -96,9 +96,15 @@ export default class ResponsiveGridLayout extends Component {
                     isDashboardItem =
                         (child.props._dashprivate_layout
                             ? child.props._dashprivate_layout.type
-                            : child.type.name) === 'DashboardItem';
+                            : child.type.name) === 'DashboardItemResponsive';
 
-                    child_id = isDashboardItem ? child_props.i : child_props.id;
+                    child_id = child_props.id;
+
+                    if(typeof child_id === 'undefined') {
+                        child_id = key.toString();
+                    } else if (typeof child_id === 'object') {
+                        child_id = JSON.stringify(child_id);
+                    }
                 }
                 // Define the layout for the specific item x breakpoint
                 if (savedLayout && savedLayout[bkp]) {
@@ -154,6 +160,7 @@ export default class ResponsiveGridLayout extends Component {
         }
         this.layouts = layouts;
     }
+
     render() {
         let {children = []} = this.props;
         const {
@@ -189,6 +196,7 @@ export default class ResponsiveGridLayout extends Component {
             >
                 {children.map((child, key) => {
                     let _key;
+                    let _data_grid;
                     if (child.props) {
                         const child_props = child.props._dashprivate_layout
                             ? child.props._dashprivate_layout.props
@@ -196,10 +204,19 @@ export default class ResponsiveGridLayout extends Component {
                         const isDashboardItem =
                             (child.props._dashprivate_layout
                                 ? child.props._dashprivate_layout.type
-                                : child.type.name) === 'DashboardItem';
-                        _key = isDashboardItem
-                            ? child_props.i
-                            : child_props.id || key.toString();
+                                : child.type.name) === 'DashboardItemResponsive';
+                        _key = child_props.id || key.toString();
+
+                        if(isDashboardItem) {
+                            const {
+                                x = {},
+                                y = {},
+                                w = {},
+                                h = {},
+                            } = child_props;
+        
+                            _data_grid = {x: x, y: y, w: w, h: h};
+                        }
 
                         
                         if (typeof _key === 'object') {
@@ -210,7 +227,7 @@ export default class ResponsiveGridLayout extends Component {
                     }
 
                     return (
-                        <div key={_key} className="item">
+                        <div key={_key} className="item" data-grid={_data_grid}>
                             {
                                 <div className="item-top">
                                     <span className="item-top-content">
