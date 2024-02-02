@@ -207,6 +207,11 @@ export default class ResponsiveGridLayout extends Component {
                         _key = isDashboardItem
                             ? child_props.i
                             : child_props.id || key.toString();
+
+                        
+                        if (typeof _key === 'object') {
+                            _key = JSON.stringify(_key)
+                        }
                     } else {
                         _key = key.toString();
                     }
