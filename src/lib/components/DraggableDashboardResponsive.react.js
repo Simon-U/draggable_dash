@@ -17,7 +17,7 @@ import './style.css';
 
 const ResponsiveReactGridLayout = widthProvider(Responsive);
 
-const defaultItemLayout = (item_layout, id, key, ncols, max_cols) => {
+const defaultItemLayout = (item_layout, id, key, ncols, nrows, max_cols) => {
     const nb_items_x = Math.floor(max_cols / ncols);
     const col = key % nb_items_x;
     const row = Math.floor(key / nb_items_x);
@@ -26,7 +26,7 @@ const defaultItemLayout = (item_layout, id, key, ncols, max_cols) => {
         x: col * ncols,
         y: row,
         w: ncols,
-        h: NROWS,
+        h: nrows,
     };
     return {
         ...defaultChildLayout,
@@ -61,6 +61,7 @@ export default class DraggableDashboardResponsive extends Component {
             layouts: providedLayouts,
             clearSavedLayout,
             ncols = NCOLS_RESPONSIVE,
+            nrows = NROWS,
             breakpoints = BREAKPOINTS,
             gridCols = GRID_COLS_RESPONSIVE,
         } = this.props;
@@ -132,6 +133,7 @@ export default class DraggableDashboardResponsive extends Component {
                         child_id,
                         key,
                         ncols[bkp],
+                        nrows,
                         gridCols[bkp]
                     );
                 }
@@ -141,6 +143,7 @@ export default class DraggableDashboardResponsive extends Component {
                         child_id,
                         key,
                         ncols[bkp],
+                        nrows,
                         gridCols[bkp]
                     );
                 }
@@ -200,142 +203,142 @@ export default class DraggableDashboardResponsive extends Component {
                             if (typeof _key === 'object') {
                                 _key = JSON.stringify(_key)
                             }
-                    } else {
-                        _key = key.toString();
-                    }
-
-                    return (
-                        <div key={_key} className="item">
-                            {
-                                <div className="item-top">
-                                    <span className="item-top-content">
-                                        ...
-                                    </span>
-                                    {/* 
-                                        <div className="item-top-right">...</div> 
-                                        Maybe we could add a menu to change the 
-                                        properties of the item.
-                                        (static, draggable, resizeable, ...)
-                                    */}
-                                </div>
-                            }
-                            <div
-                                className="item-content"
-                                onMouseDown={(e) => e.stopPropagation()}
-                            >
-                                {child}
-                            </div>
-                        </div>
-                    );
-                })}
-            </ResponsiveReactGridLayout>
-        );
-    }
-}
-
-DraggableDashboardResponsive.defaultProps = {
-    save: true,
-    clearSavedLayout: false,
-    children: [],
-    style: {},
-    className: "",
-};
-
-DraggableDashboardResponsive.propTypes = {
-    /**
-     * (string) The ID used to identify this component in Dash callbacks.
-     * The id is also used to automatically save the layout on client side.
-     */
-    id: PropTypes.string,
-
-    /**
-     * Layout is a list(python)/vector(R) of dictionnary(Python)/list(R) with the format:
-     * {x: number, y: number, w: number, h: number}
-     * The index into the layout must match the id used on each item component with DashboardItem.
-     * If you choose to use custom keys, you can specify that key in the layout
-     * array objects like so:
-     * {i: string, x: number, y: number, w: number, h: number}
-     * The ID used to identify this component in Dash callbacks.
-     * The id is also used to automatically save the layout on client side.
-     */
-    layouts: PropTypes.object,
-
-    /**
-     * ({breakpoint: number}) The breakpoints for the responsive layout.
-     * For each screen size (breakpoint) we can define a different layout.
-     * (see also 'layouts' and 'gridCols' arguments)
-     * Default value is {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}
-     */
-    breakpoints: PropTypes.object,
-
-    /**
-     * ({breakpoint: number}) the number of columns in the grid layout.
-     * Default value is {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}.
-     */
-    gridCols: PropTypes.object,
-
-    // margin: PropTypes.oneOfType([
-    //     PropTypes.object,
-    //     PropTypes.arrayOf(PropTypes.object),
-    // ]),
-    // containerPadding: PropTypes.oneOfType([
-    //     PropTypes.object,
-    //     PropTypes.arrayOf(PropTypes.object),
-    // ]),
-
-    /**
-     * Children is a list of the items (dash Components and/or 
-     * DashboardItem) to diplay on the layout.
-     * By default all the items can be dragged and resized.
-     */
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
-
-    /**
-     * (bool) If True, then the layout is automatically saved on client browser.
-     * Default value is True
-     */
-    save: PropTypes.bool,
-
-    /**
-     * (bool) If set to true, then the layout saved in the client browser
-     * will be cleared in the next page load.
-     */
-    clearSavedLayout: PropTypes.bool,
-
-    /**
-     * ({breakpoint: number}) the default number of columns by item.
-     * Default value is {lg: 6, md: 5, sm: 3, xs: 4, xxs: 2}.
-     */
-    ncols: PropTypes.number,
-
-    /**
-     * (number) the default number of row by item.
-     * Default value is 8.
-     */
-    nrows: PropTypes.number,
+                        } else {
+                            _key = key.toString();
+                        }
     
-    /**
-     * (number) height of a row (in px).
-     * Default value is 30.
-     */
-    height: PropTypes.number,
-
-    /**
-     * (string) class passed to the react-grid-layout component 
-     */
-    className: PropTypes.string,
-
-    /**
-     * (dict) css style passed to the react-grid-layout component
-     */
-    style: PropTypes.object,
-
-    /**
-     * Dash-assigned callback that should be called to report property changes
-     * to Dash, to make them available for callbacks.
-     */
-    setProps: PropTypes.func,
-};
+                        return (
+                            <div key={_key} className="item">
+                                {
+                                    <div className="item-top">
+                                        <span className="item-top-content">
+                                            ...
+                                        </span>
+                                        {/* 
+                                            <div className="item-top-right">...</div> 
+                                            Maybe we could add a menu to change the 
+                                            properties of the item.
+                                            (static, draggable, resizeable, ...)
+                                        */}
+                                    </div>
+                                }
+                                <div
+                                    className="item-content"
+                                    onMouseDown={(e) => e.stopPropagation()}
+                                >
+                                    {child}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </ResponsiveReactGridLayout>
+            );
+        }
+    }
+    
+    DraggableDashboardResponsive.defaultProps = {
+        save: true,
+        clearSavedLayout: false,
+        children: [],
+        style: {},
+        className: "",
+    };
+    
+    DraggableDashboardResponsive.propTypes = {
+        /**
+         * (string) The ID used to identify this component in Dash callbacks.
+         * The id is also used to automatically save the layout on client side.
+         */
+        id: PropTypes.string,
+    
+        /**
+         * Layout is a list(python)/vector(R) of dictionnary(Python)/list(R) with the format:
+         * {x: number, y: number, w: number, h: number}
+         * The index into the layout must match the id used on each item component with DashboardItem.
+         * If you choose to use custom keys, you can specify that key in the layout
+         * array objects like so:
+         * {i: string, x: number, y: number, w: number, h: number}
+         * The ID used to identify this component in Dash callbacks.
+         * The id is also used to automatically save the layout on client side.
+         */
+        layouts: PropTypes.object,
+    
+        /**
+         * ({breakpoint: number}) The breakpoints for the responsive layout.
+         * For each screen size (breakpoint) we can define a different layout.
+         * (see also 'layouts' and 'gridCols' arguments)
+         * Default value is {lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}
+         */
+        breakpoints: PropTypes.object,
+    
+        /**
+         * ({breakpoint: number}) the number of columns in the grid layout.
+         * Default value is {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}.
+         */
+        gridCols: PropTypes.object,
+    
+        // margin: PropTypes.oneOfType([
+        //     PropTypes.object,
+        //     PropTypes.arrayOf(PropTypes.object),
+        // ]),
+        // containerPadding: PropTypes.oneOfType([
+        //     PropTypes.object,
+        //     PropTypes.arrayOf(PropTypes.object),
+        // ]),
+    
+        /**
+         * Children is a list of the items (dash Components and/or 
+         * DashboardItem) to diplay on the layout.
+         * By default all the items can be dragged and resized.
+         */
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.node),
+            PropTypes.node,
+        ]),
+    
+        /**
+         * (bool) If True, then the layout is automatically saved on client browser.
+         * Default value is True
+         */
+        save: PropTypes.bool,
+    
+        /**
+         * (bool) If set to true, then the layout saved in the client browser
+         * will be cleared in the next page load.
+         */
+        clearSavedLayout: PropTypes.bool,
+    
+        /**
+         * ({breakpoint: number}) the default number of columns by item.
+         * Default value is {lg: 6, md: 5, sm: 3, xs: 4, xxs: 2}.
+         */
+        ncols: PropTypes.object,
+    
+        /**
+         * (number) the default number of row by item.
+         * Default value is 8.
+         */
+        nrows: PropTypes.number,
+        
+        /**
+         * (number) height of a row (in px).
+         * Default value is 30.
+         */
+        height: PropTypes.number,
+    
+        /**
+         * (string) class passed to the react-grid-layout component 
+         */
+        className: PropTypes.string,
+    
+        /**
+         * (dict) css style passed to the react-grid-layout component
+         */
+        style: PropTypes.object,
+    
+        /**
+         * Dash-assigned callback that should be called to report property changes
+         * to Dash, to make them available for callbacks.
+         */
+        setProps: PropTypes.func,
+    };

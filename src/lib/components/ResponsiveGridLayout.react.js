@@ -17,7 +17,7 @@ import './style.css';
 
 const ResponsiveReactGridLayout = widthProvider(Responsive);
 
-const defaultItemLayout = (item_layout, id, key, ncols, max_cols) => {
+const defaultItemLayout = (item_layout, id, key, ncols, nrows, max_cols) => {
     const nb_items_x = Math.floor(max_cols / ncols);
     const col = key % nb_items_x;
     const row = Math.floor(key / nb_items_x);
@@ -26,7 +26,7 @@ const defaultItemLayout = (item_layout, id, key, ncols, max_cols) => {
         x: col * ncols,
         y: row,
         w: ncols,
-        h: NROWS,
+        h: nrows
     };
     return {
         ...defaultChildLayout,
@@ -61,6 +61,7 @@ export default class ResponsiveGridLayout extends Component {
             layouts: providedLayouts,
             clearSavedLayout,
             ncols = NCOLS_RESPONSIVE,
+            nrows = NROWS,
             breakpoints = BREAKPOINTS,
             gridCols = GRID_COLS_RESPONSIVE,
         } = this.props;
@@ -78,7 +79,6 @@ export default class ResponsiveGridLayout extends Component {
         }
         const savedLayout = getFromLs(`${id}-layouts`);
 
-        console.log({savedLayout});
         for (var bkp in breakpoints) {
             // eslint-disable-next-line no-loop-func
             const layout = children.map((child, key) => {
@@ -133,6 +133,7 @@ export default class ResponsiveGridLayout extends Component {
                         child_id,
                         key,
                         ncols[bkp],
+                        nrows,
                         gridCols[bkp]
                     );
                 }
@@ -142,6 +143,7 @@ export default class ResponsiveGridLayout extends Component {
                         child_id,
                         key,
                         ncols[bkp],
+                        nrows,
                         gridCols[bkp]
                     );
                 }
@@ -150,7 +152,6 @@ export default class ResponsiveGridLayout extends Component {
             });
             layouts[bkp] = layout;
         }
-        console.log(layouts);
         this.layouts = layouts;
     }
     render() {
@@ -168,13 +169,6 @@ export default class ResponsiveGridLayout extends Component {
 
         children = Array.isArray(children) ? children : [children];
 
-        console.log({layout: this.layouts});
-        console.log({gridCols});
-        console.log({className});
-        console.log({style});
-        console.log({height});
-        console.log({breakpoints});
-        console.log({props: this.props});
         return (
             <ResponsiveReactGridLayout
                 className={className}
@@ -186,7 +180,6 @@ export default class ResponsiveGridLayout extends Component {
                 onLayoutChange={(current_layout, all_layouts) => {
                     this.layouts = all_layouts;
 
-                    console.log({layoutchange: {all_layouts, current_layout}});
                     setProps({current_layout, layouts: all_layouts});
                     if (save) {
                         saveToLs(`${id}-layouts`, all_layouts);
@@ -345,7 +338,7 @@ ResponsiveGridLayout.propTypes = {
      * ({breakpoint: number}) the default number of columns by item.
      * Default value is {lg: 6, md: 5, sm: 3, xs: 4, xxs: 2}.
      */
-    ncols: PropTypes.number,
+    ncols: PropTypes.object,
 
     /**
      * (number) the default number of row by item.
