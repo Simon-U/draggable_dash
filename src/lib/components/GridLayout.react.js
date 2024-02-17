@@ -10,7 +10,6 @@ import '../../../node_modules/react-resizable/css/styles.css';
 import './style.css';
 
 const defaultItemLayout = (item_layout, id, key, ncols, nrows, gridCols) => {
-const defaultItemLayout = (item_layout, id, key, ncols, nrows, gridCols) => {
     const nb_child_x = Math.floor(gridCols / ncols);
     const col = key % nb_child_x;
     const row = Math.floor(key / nb_child_x);
@@ -19,7 +18,6 @@ const defaultItemLayout = (item_layout, id, key, ncols, nrows, gridCols) => {
         x: col * ncols,
         y: row,
         w: ncols,
-        h: nrows,
         h: nrows,
     };
     return {
@@ -55,7 +53,6 @@ export default class GridLayout extends Component {
             layout: providedLayout,
             clearSavedLayout,
             ncols = NCOLS,
-            nrows = NROWS,
             nrows = NROWS,
             gridCols = GRID_COLS,
         } = this.props;
@@ -104,7 +101,6 @@ export default class GridLayout extends Component {
                     key,
                     ncols,
                     nrows,
-                    nrows,
                     gridCols
                 );
             }
@@ -114,7 +110,6 @@ export default class GridLayout extends Component {
                     child_id,
                     key,
                     ncols,
-                    nrows,
                     nrows,
                     gridCols
                 );
